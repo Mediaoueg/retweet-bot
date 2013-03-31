@@ -11,18 +11,21 @@ particular hashtag
 """
 
 from twitter import * # Mike Verdone's twitter API wrapper (https://github.com/sixohsix/twitter)
+import time
 
-OAUTH_TOKEN = "" # get it from dev.twitter.com
-OAUTH_SECRET = "" # get it from dev.twitter.com
-CONSUMER_KEY = "" # get it from dev.twitter.com
-CONSUMER_SECRET = "" # get it from dev.twitter.com
-TWEET_ID_CACHE = "last_seen.txt" # file where last seen tweet id will be store
+# Get your tokens and keys from dev.twitter.com
+OAUTH_TOKEN = ""
+OAUTH_SECRET = ""
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
+TWEET_ID_CACHE = "last_seen.txt" # filename where last seen tweet id will be store
 HASHTAG = "#haiti" # Desired hashtag to retweet
 
 def __init__():
-    t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
     last_tweet_id = get_last_seen()
+
     tweets = t.search.tweets(q=HASHTAG, count=1, since_id=last_tweet_id)
+
     try:
         tweetid = tweets["statuses"][0]["id"]
         t.statuses.retweet(id=tweetid)
@@ -42,4 +45,7 @@ def get_last_seen():
     return last_tweet_id
 
 if __name__ == '__main__':
-    __init__()
+    t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
+    while (1):
+        __init__()
+        time.sleep(15)
