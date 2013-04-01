@@ -7,10 +7,10 @@ Created by Pascal Bruno on 2013-03-30.
 Copyright (c) 2013 Pascal Bruno. All rights reserved.
 
 A twitter bot that retweets any tweet containing a
-particular hashtag
+particular hashtag.
 """
 
-from twitter import * # Mike Verdone's twitter API wrapper (https://github.com/sixohsix/twitter)
+from twitter import *                       # Mike Verdone's API wrapper (https://github.com/sixohsix/twitter)
 import time
 
 # Get your tokens and keys from dev.twitter.com
@@ -18,8 +18,9 @@ OAUTH_TOKEN = ""
 OAUTH_SECRET = ""
 CONSUMER_KEY = ""
 CONSUMER_SECRET = ""
-TWEET_ID_CACHE = "last_seen.txt" # filename where last seen tweet id will be store
-HASHTAG = "#haiti" # Desired hashtag to retweet
+TWEET_ID_CACHE = "last_seen.txt"            # Filename where last seen tweet id will be stored
+HASHTAG = "#haiti"                          # Desired hashtag to retweet
+timer = 15                                  # How long to wait before checking for next tweet
 
 def __init__():
     last_tweet_id = get_last_seen()
@@ -34,6 +35,7 @@ def __init__():
         f.close()
     except:
         pass
+    time.sleep(timer)                       # Wait a few seconds before checking for another tweet to retweet
 
 def get_last_seen():
     try:
@@ -48,4 +50,3 @@ if __name__ == '__main__':
     t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
     while (1):
         __init__()
-        time.sleep(15)
